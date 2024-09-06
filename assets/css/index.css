@@ -1,7 +1,46 @@
-.attribution { 
-    font-size: 11px; 
-    text-align: center; 
+:root{
+    --main: hsl(14, 86%, 42%);
 }
-.attribution a { 
-    color: hsl(228, 45%, 44%); 
+
+.attribution {
+    font-size: 11px;
+    text-align: center;
 }
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
+
+body{
+    background-color: hsl(20, 50%, 98%);
+}
+
+.card-btn {
+    position: absolute;
+    z-index: 10;
+    bottom: -18px;
+    left: 30px;
+    background-color: white;
+    border-color: var(--main);
+    color: black;
+}
+
+.img-container {
+    position: relative;
+    display: flex;
+}
+
+.increment-decrement {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cart-header{
+    color: var(--main);
+}
+
+.cart{
+    background-color: white;
+}
+
