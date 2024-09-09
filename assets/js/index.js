@@ -15,7 +15,7 @@ data.forEach(item => {
   <div class="card-body">
   <p class="card-text mt-3">${item.category}</p>
     <h5 class="card-title">${item.name}</h5>
-    <p class="card-text">${item.price}</p>
+    <p class="card-text">$${(item.price).toFixed(2)}</p>
   </div>
 </div>`
 })
