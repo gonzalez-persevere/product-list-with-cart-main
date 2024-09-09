@@ -1,7 +1,9 @@
 :root{
     --main: hsl(14, 86%, 42%);
 }
-
+.text-main{
+    color: var(--main)
+}
 .attribution {
     font-size: 11px;
     text-align: center;
