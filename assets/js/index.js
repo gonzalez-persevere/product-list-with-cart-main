@@ -3,8 +3,7 @@ const cardContainer = document.querySelector('.card-container');
 const cartNumber = document.querySelector('.cart-number');
 const items = document.querySelector('.items');
 const empty = document.querySelectorAll('.empty');
-let itemArray = [];
-let cartObj = {}
+const cartObj = {};
 
 data.forEach(item => {
     cardContainer.innerHTML += `<div class="card border-0" style="width: 18rem;">
@@ -24,12 +23,12 @@ document.querySelectorAll('.card-btn').forEach(btn => {
 
     btn.addEventListener('mouseenter', (e) => {
         btn.style.backgroundColor = 'hsl(14, 86%, 42%)';
-        btn.innerHTML = `<img class='decrement' src='./assets/images/icon-decrement-quantity.svg'> <span class='text-white item-increment'>|</span> <img class='increment' src='./assets/images/icon-increment-quantity.svg'>`
+        btn.innerHTML = `<img class='decrement' src='./assets/images/icon-decrement-quantity.svg'> <span class='text-white item-increment'>${cartObj[btn.dataset.title]?.quantity >= 1 ? cartObj[btn.dataset.title].quantity : '|'}</span> <img class='increment' src='./assets/images/icon-increment-quantity.svg'>`
         btn.classList.add('increment-decrement')
 
         // Increment
         document.querySelector('.increment').addEventListener('click', (e) => {
-             items.innerHTML = ``
+            items.innerHTML = '';
             empty.forEach(item => item.classList.add('d-none'))
             
             if(Object.keys(cartObj).includes(e.target.parentElement.dataset.title)){
@@ -53,19 +52,37 @@ document.querySelectorAll('.card-btn').forEach(btn => {
         // Decrement
         document.querySelector('.decrement').addEventListener('click', (e) => {
 
-            if (Number(cartNumber.textContent) < 1) return
-            let number = Number(cartNumber.textContent) - 1;
+            if (Number(cartObj[e.target.parentElement.dataset.title]?.quantity) >= 1){
+                items.innerHTML = '';
+                cartObj[e.target.parentElement.dataset.title] = {...cartObj[e.target.parentElement.dataset.title], quantity: cartObj[e.target.parentElement.dataset.title].quantity - 1, price: e.target.parentElement.dataset.price}
+                let number = Number(cartNumber.textContent) - 1;
+    
+                cartNumber.innerText = number;
+                document.querySelector('.item-increment').innerText = cartObj[e.target.parentElement.dataset.title].quantity
 
-            cartNumber.innerText = number;
-            document.querySelector('.item-increment').innerText = number
+                for (const property in cartObj) {
+                    document.querySelector('.item-increment').innerText = cartObj[property].quantity;
+                    items.innerHTML += `<li><b>${property}</b></li>`
+                    items.innerHTML += `<li><span class='text-main fw-bold me-3'>${cartObj[property].quantity}x</span><span class='me-3'>@${Number(cartObj[property].price).toFixed(2)}</span><span>$${(cartObj[property].quantity * Number(cartObj[property].price)).toFixed(2)}</span></li>`
+                  }
+            } else {
+            }
         })
+        
     })
 })
 
 document.querySelectorAll('.card-btn').forEach(btn => {
     btn.addEventListener('mouseleave', (e) => {
-        btn.style.backgroundColor = 'white';
-        btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg' >Add to Cart`
-        btn.classList.remove('increment-decrement')
+        console.log(btn.dataset.title);
+        
+        if(cartObj[btn.dataset.title]?.quantity >= 1){
+           
+        } else {
+            btn.style.backgroundColor = 'white';
+            btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg' >Add to Cart`
+            btn.classList.remove('increment-decrement')
+
+        }
     })
 })
