@@ -23,76 +23,87 @@ data.forEach(item => {
 document.querySelectorAll('.card-btn').forEach(btn => {
 
     btn.addEventListener('mouseenter', (e) => {
+        let ev = e;
+        
         btn.style.backgroundColor = 'hsl(14, 86%, 42%)';
-        btn.innerHTML = `<img class='decrement' src='./assets/images/icon-decrement-quantity.svg'> <span class='text-white item-increment'>${cartObj[btn.dataset.title]?.quantity >= 1 ? cartObj[btn.dataset.title].quantity : '|'}</span> <img class='increment' src='./assets/images/icon-increment-quantity.svg'>`
+        btn.innerHTML = `<img class='decrement' src='./assets/images/icon-decrement-quantity.svg'> <span class='text-white item-increment'>${cartObj[e.target.dataset.title]?.quantity >= 1 ? cartObj[e.target.dataset.title].quantity : '|'}</span> <img class='increment' src='./assets/images/icon-increment-quantity.svg'>`
         btn.classList.add('increment-decrement')
-
-        btn.addEventListener('mouseleave', (e) => {
+        incrementQuantity(ev);
+        decrementQuantity(ev);
         
-            if (cartObj[btn.dataset.title]?.quantity >= 1) {
-        
-            } else {
-                btn.style.backgroundColor = 'white';
-                btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg' >Add to Cart`
-                btn.classList.remove('increment-decrement')
-        
-            }
-        })
-        incrementQuantity(e);
-        decrementQuantity(e);
     })
+
+    btn.addEventListener('mouseleave', (e) => {
+        let ev = e;
+        if (cartObj[btn.dataset.title]?.quantity >= 1) {
+            updateUI(ev);
+
+        } else {
+            btn.style.backgroundColor = 'white';
+            btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg' >Add to Cart`
+            btn.classList.remove('increment-decrement')
+
+        }
+       
+        incrementQuantity(ev);
+        decrementQuantity(ev);
+    })
+
 })
 
 
-function incrementQuantity(e){
+function incrementQuantity(e) {
+    let ev = e;
     document.querySelectorAll('.increment').forEach(increase => {
         increase.addEventListener('click', (e) => {
-            e.stopPropagation();
-            items.innerHTML = '';
+            updateUI()
+            
             empty.forEach(item => item.classList.add('d-none'))
-
+            
             if (Object.keys(cartObj).includes(e.target.parentElement.dataset.title)) {
                 cartObj[e.target.parentElement.dataset.title] = { ...cartObj[e.target.parentElement.dataset.title], quantity: cartObj[e.target.parentElement.dataset.title].quantity + 1, price: e.target.parentElement.dataset.price }
+                updateUI(ev)
             } else {
-
+                
                 cartObj[e.target.parentElement.dataset.title] = { ...cartObj[e.target.parentElement.dataset.title], quantity: 1, price: e.target.parentElement.dataset.price }
+                updateUI(ev)
             }
             let number = Number(cartNumber.textContent) + 1;
-
+            updateUI(ev)
             cartNumber.innerText = number;
-
-            for (const property in cartObj) {
-                document.querySelector('.item-increment').innerText = cartObj[property].quantity;
-                items.innerHTML += `<li><b>${property}</b></li>`
-                items.innerHTML += `<li><span class='text-main fw-bold me-3'>${cartObj[property].quantity}x</span><span class='me-3'>@${Number(cartObj[property].price).toFixed(2)}</span><span>$${(cartObj[property].quantity * Number(cartObj[property].price)).toFixed(2)}</span></li>`
-            }
         })
     })
 }
 
-function decrementQuantity(e){
+function decrementQuantity(e) {
+    let ev = e;
     document.querySelectorAll('.decrement').forEach(decrease => {
 
         decrease.addEventListener('click', (e) => {
-            e.stopPropagation();
             if (Number(cartObj[e.target.parentElement.dataset.title]?.quantity) >= 1) {
                 items.innerHTML = '';
                 cartObj[e.target.parentElement.dataset.title] = { ...cartObj[e.target.parentElement.dataset.title], quantity: cartObj[e.target.parentElement.dataset.title].quantity - 1, price: e.target.parentElement.dataset.price }
                 let number = Number(cartNumber.textContent) - 1;
 
                 cartNumber.innerText = number;
-                document.querySelector('.item-increment').innerText = cartObj[e.target.parentElement.dataset.title].quantity
-
-                for (const property in cartObj) {
-                    document.querySelector('.item-increment').innerText = cartObj[property].quantity;
-                    if(cartObj[property].quantity !== 0){
-                        items.innerHTML += `<li><b>${property}</b></li>`
-                        items.innerHTML += `<li><span class='text-main fw-bold me-3'>${cartObj[property].quantity}x</span><span class='me-3'>@${Number(cartObj[property].price).toFixed(2)}</span><span>$${(cartObj[property].quantity * Number(cartObj[property].price)).toFixed(2)}</span></li>`
-                    }
-                }
-            } else {
+                document.querySelector('.item-increment').innerText = cartObj[e.target.parentElement.dataset.title]?.quantity >= 1 ? cartObj[e.target.parentElement.dataset.title].quantity : '|';
+                updateUI(ev)
             }
+            updateUI(ev)
         })
 
     })
+}
+
+function updateUI(e) {
+    items.innerHTML = '';
+    
+    for (const property in cartObj) {
+
+        if (cartObj[property].quantity !== 0) {
+            items.innerHTML += `<li><b>${property}</b></li>`
+            items.innerHTML += `<li><span class='text-main fw-bold me-3'>${cartObj[property].quantity}x</span><span class='me-3'>@${Number(cartObj[property].price).toFixed(2)}</span><span>$${(cartObj[property].quantity * Number(cartObj[property].price)).toFixed(2)}</span></li>`
+            document.querySelector('.item-increment').innerHTML = cartObj[property].quantity;
+        }
+    }
 }
