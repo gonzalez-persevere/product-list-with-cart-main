@@ -6,7 +6,6 @@ const empty = document.querySelectorAll('.empty');
 const cartObj = {};
 
 data.forEach(item => {
-
     // Creates a card for all the items in the json file
     cardContainer.innerHTML += `<div class="card border-0" style="width: 18rem;">
     <div class='img-container'>
@@ -29,13 +28,11 @@ document.querySelectorAll('.card-btn').forEach(btn => {
 // Define the main button click event listener
 function handleClick(e) {
     let btn = e.target.closest('.card-btn'); // The clicked button
-
     btn.style.backgroundColor = 'hsl(14, 86%, 42%)';
     btn.innerHTML = `
         <img class='decrement' src='./assets/images/icon-decrement-quantity.svg'> 
         <span class='text-white item-increment'>1</span> 
-        <img class='increment' src='./assets/images/icon-increment-quantity.svg'>
-    `;
+        <img class='increment' src='./assets/images/icon-increment-quantity.svg'>`;
     btn.classList.add('increment-decrement');
 
     addOne(e); // Call your addOne function
@@ -44,13 +41,9 @@ function handleClick(e) {
     const decrementBtn = btn.querySelector('.decrement');
     const incrementBtn = btn.querySelector('.increment');
 
-    if (decrementBtn) {
+    // Event listeners for the + and - images
         decrementBtn.addEventListener('click', decrementQuantity);
-    }
-
-    if (incrementBtn) {
         incrementBtn.addEventListener('click', incrementQuantity);
-    }
 
     // Remove the event listener from the main button to prevent further clicks
     btn.removeEventListener('click', handleClick);
@@ -164,7 +157,7 @@ function updateUI() {
             <span>This is a <b>carbon-neutral</b> delivery<span>
         </li>
         <li class="mt-2">
-            <button class="btn btn-outline-dark w-100 bg-main text-light rounded-pill" id="confirm-order-btn">Confirm Order</button>
+            <button class="btn w-100 bg-main text-light rounded-pill" id="confirm-order-btn">Confirm Order</button>
         </li>
         </div>
     `;
