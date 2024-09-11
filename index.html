@@ -31,6 +31,27 @@
     </div>
   </div>
 
+  <!-- Bootstrap Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="orderModalLabel">Order Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p>Your order has been placed successfully. Thank you for shopping with us!</p>
+              <p><strong>Order Total:</strong> $<span id="modal-total-price">0.00</span></p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Proceed to Payment</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
     Coded by <a href="#">Arnulfo Gonzalez Jr</a>.

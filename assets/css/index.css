@@ -4,6 +4,9 @@
 .text-main{
     color: var(--main)
 }
+.bg-main{
+    background-color: var(--main);
+}
 .attribution {
     font-size: 11px;
     text-align: center;

@@ -126,6 +126,7 @@ function addOne(e) {
 function updateUI() {
     items.innerHTML = ''; // Clear current items
     let totalQuantity = 0;
+    let totalPrice = 0;
     let cartIsEmpty = true; // Flag to check if cart is empty
 
     for (const title in cartObj) {
@@ -133,8 +134,9 @@ function updateUI() {
             cartIsEmpty = false; // There are items in the cart
 
             const quantity = cartObj[title].quantity;
-            const price = Number(cartObj[title].price).toFixed(2);
+            const price = Number(cartObj[title].price);
             totalQuantity += quantity;
+            totalPrice += quantity * price;
 
             // Update the list in the cart with an "X" button to remove the item
             items.innerHTML += `
@@ -144,12 +146,23 @@ function updateUI() {
                 </li>
                 <li>
                     <span class='text-main fw-bold me-3'>${quantity}x</span>
-                    <span class='me-3'>@${price}</span>
+                    <span class='me-3'>@${price.toFixed(2)}</span>
                     <span>$${(quantity * price).toFixed(2)}</span>
                 </li>
             `;
         }
     }
+
+    // Add Order Total and Confirm Order button
+    items.innerHTML += `
+        <li class="mt-2 border-top pt-2 d-flex justify-content-between">
+            <b>Order Total:</b>
+            <span class='fw-bold fs-4'>$${totalPrice.toFixed(2)}</span>
+        </li>
+        <li class="mt-2">
+            <button class="btn btn-outline-dark w-100 bg-main text-light rounded-pill" id="confirm-order-btn">Confirm Order</button>
+        </li>
+    `;
 
     // Update cart quantity number
     cartNumber.innerText = totalQuantity;
@@ -165,7 +178,14 @@ function updateUI() {
     document.querySelectorAll('.remove-item').forEach(button => {
         button.addEventListener('click', removeItem);
     });
+
+    // Add event listener for the Confirm Order button
+    document.getElementById('confirm-order-btn').addEventListener('click', () => {
+        const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+        modal.show();
+    });
 }
+
 
 // Function to remove an item from the cart
 function removeItem(e) {
@@ -192,3 +212,10 @@ function resetButton(btn) {
     btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg'>Add to Cart`;
     btn.addEventListener('click', handleClick); // Reattach event listener
 }
+
+// Add event listener for the Confirm Order button
+document.getElementById('confirm-order-btn').addEventListener('click', () => {
+    const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+    document.getElementById('modal-total-price').innerText = totalPrice.toFixed(2); // Update modal with total price
+    modal.show();
+});
