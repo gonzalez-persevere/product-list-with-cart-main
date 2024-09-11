@@ -21,8 +21,6 @@ data.forEach(item => {
 </div>`
 })
 
-
-
 // Attach the event listener to all .card-btn buttons
 document.querySelectorAll('.card-btn').forEach(btn => {
     btn.addEventListener('click', handleClick);
@@ -124,33 +122,73 @@ function addOne(e) {
     updateUI();
 }
 
-// Reset the button UI when quantity is 0
+// Update the cart UI
+function updateUI() {
+    items.innerHTML = ''; // Clear current items
+    let totalQuantity = 0;
+    let cartIsEmpty = true; // Flag to check if cart is empty
+
+    for (const title in cartObj) {
+        if (cartObj[title].quantity > 0) {
+            cartIsEmpty = false; // There are items in the cart
+
+            const quantity = cartObj[title].quantity;
+            const price = Number(cartObj[title].price).toFixed(2);
+            totalQuantity += quantity;
+
+            // Update the list in the cart with an "X" button to remove the item
+            items.innerHTML += `
+                <li class='d-flex justify-content-between mt-3'>
+                    <b>${title}</b>
+                    <button class="remove-item btn btn-outline-danger" data-title="${title}">X</button>
+                </li>
+                <li>
+                    <span class='text-main fw-bold me-3'>${quantity}x</span>
+                    <span class='me-3'>@${price}</span>
+                    <span>$${(quantity * price).toFixed(2)}</span>
+                </li>
+            `;
+        }
+    }
+
+    // Update cart quantity number
+    cartNumber.innerText = totalQuantity;
+
+    // Show or hide the empty cart indicator
+    if (cartIsEmpty) {
+        empty.forEach(item => item.classList.remove('d-none'));
+    } else {
+        empty.forEach(item => item.classList.add('d-none'));
+    }
+
+    // Add event listeners to the "X" buttons for removing items
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', removeItem);
+    });
+}
+
+// Function to remove an item from the cart
+function removeItem(e) {
+    const title = e.target.dataset.title;
+
+    // Remove item from cart object
+    if (cartObj[title]) {
+        delete cartObj[title];
+
+        // Reset button to its initial state
+        const btn = document.querySelector(`.card-btn[data-title="${title}"]`);
+        if (btn) {
+            resetButton(btn);
+        }
+
+        updateUI(); // Update the UI to reflect changes
+    }
+}
+
+// Reset the button UI to its initial state
 function resetButton(btn) {
     btn.style.backgroundColor = 'white';
     btn.classList.remove('increment-decrement');
     btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg'>Add to Cart`;
     btn.addEventListener('click', handleClick); // Reattach event listener
 }
-
-// Update the cart UI
-function updateUI() {
-    items.innerHTML = ''; // Clear current items
-    let totalQuantity = 0;
-
-    for (const title in cartObj) {
-        if (cartObj[title].quantity > 0) {
-            const quantity = cartObj[title].quantity;
-            const price = Number(cartObj[title].price).toFixed(2);
-            totalQuantity += quantity;
-
-            // Update the list in the cart
-            items.innerHTML += `
-                <li><b>${title}</b></li>
-                <li><span class='text-main fw-bold me-3'>${quantity}x</span><span class='me-3'>@${price}</span><span>$${(quantity * price).toFixed(2)}</span></li>
-            `;
-        }
-    }
-
-    cartNumber.innerText = totalQuantity; // Update cart quantity number
-}
-
