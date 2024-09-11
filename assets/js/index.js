@@ -135,7 +135,7 @@ function updateUI() {
             items.innerHTML += `
                 <li class='d-flex justify-content-between mt-3'>
                     <b>${title}</b>
-                    <button class="remove-item btn btn-outline-danger" data-title="${title}">X</button>
+                    <button class="remove-item btn btn-outline-danger" data-title="${title}"><b>X</b></button>
                 </li>
                 <li>
                     <span class='text-main fw-bold me-3'>${quantity}x</span>

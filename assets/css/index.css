@@ -52,3 +52,6 @@ body{
 .btn:hover {
     background-color: hsl(14, 56%, 60%);
   }
+  .remove-item{
+    border: none;
+  }
