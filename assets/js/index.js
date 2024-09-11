@@ -154,14 +154,19 @@ function updateUI() {
     }
 
     // Add Order Total and Confirm Order button
-    items.innerHTML += `
+    items.innerHTML += ` <div class='confirm'>
         <li class="mt-2 border-top pt-2 d-flex justify-content-between">
             <b>Order Total:</b>
             <span class='fw-bold fs-4'>$${totalPrice.toFixed(2)}</span>
         </li>
+        <li class="mt-2 text-center">
+        <img src='./assets/images/icon-carbon-neutral.svg'> 
+            <span>This is a <b>carbon-neutral</b> delivery<span>
+        </li>
         <li class="mt-2">
             <button class="btn btn-outline-dark w-100 bg-main text-light rounded-pill" id="confirm-order-btn">Confirm Order</button>
         </li>
+        </div>
     `;
 
     // Update cart quantity number
@@ -170,8 +175,10 @@ function updateUI() {
     // Show or hide the empty cart indicator
     if (cartIsEmpty) {
         empty.forEach(item => item.classList.remove('d-none'));
+        document.querySelector('.confirm').classList.add('d-none')
     } else {
         empty.forEach(item => item.classList.add('d-none'));
+        document.querySelector('.confirm').classList.remove('d-none')
     }
 
     // Add event listeners to the "X" buttons for removing items
@@ -179,9 +186,11 @@ function updateUI() {
         button.addEventListener('click', removeItem);
     });
 
+
     // Add event listener for the Confirm Order button
-    document.getElementById('confirm-order-btn').addEventListener('click', () => {
-        const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+    document.querySelector('#confirm-order-btn').addEventListener('click', () => {
+        const modal = new bootstrap.Modal(document.querySelector('#orderModal'));
+        document.querySelector('#modal-total-price').innerText = totalPrice.toFixed(2); // Update modal with total price
         modal.show();
     });
 }
@@ -212,10 +221,3 @@ function resetButton(btn) {
     btn.innerHTML = `<img class='me-2' src='./assets/images/icon-add-to-cart.svg'>Add to Cart`;
     btn.addEventListener('click', handleClick); // Reattach event listener
 }
-
-// Add event listener for the Confirm Order button
-document.getElementById('confirm-order-btn').addEventListener('click', () => {
-    const modal = new bootstrap.Modal(document.getElementById('orderModal'));
-    document.getElementById('modal-total-price').innerText = totalPrice.toFixed(2); // Update modal with total price
-    modal.show();
-});
