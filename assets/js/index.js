@@ -56,17 +56,12 @@ function incrementQuantity(e) {
     const btn = e.target.closest('.card-btn');
     const title = btn.dataset.title;
 
-    if (cartObj[title]) {
-        cartObj[title].quantity += 1;
-    } else {
-        cartObj[title] = { quantity: 1, price: btn.dataset.price };
-    }
+        cartObj[title].quantity += 1; 
 
     // Update the quantity in the UI
     const itemIncrement = btn.querySelector('.item-increment');
-    if (itemIncrement) {
+
         itemIncrement.innerText = cartObj[title].quantity;
-    }
 
     updateUI();
 }
@@ -104,12 +99,6 @@ function addOne(e) {
     empty.forEach(item => item.classList.add('d-none'));
 
     cartObj[title] = { quantity: 1, price: btn.dataset.price };
-
-    // Update the quantity in the UI
-    const itemIncrement = btn.querySelector('.item-increment');
-    if (itemIncrement) {
-        itemIncrement.innerText = 1;
-    }
 
     cartNumber.innerText = Number(cartNumber.textContent) + 1;
     updateUI();
@@ -177,14 +166,6 @@ function updateUI() {
     // Add event listeners to the "X" buttons for removing items
     document.querySelectorAll('.remove-item').forEach(button => {
         button.addEventListener('click', removeItem);
-    });
-
-
-    // Add event listener for the Confirm Order button
-    document.querySelector('#confirm-order-btn').addEventListener('click', () => {
-        const modal = new bootstrap.Modal(document.querySelector('#orderModal'));
-        document.querySelector('#modal-total-price').innerText = totalPrice.toFixed(2); // Update modal with total price
-        modal.show();
     });
 }
 
