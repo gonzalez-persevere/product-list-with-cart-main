@@ -151,6 +151,13 @@ function updateUI() {
         </div>
     `;
 
+      // Add event listener for the Confirm Order button
+      document.querySelector('#confirm-order-btn').addEventListener('click', () => {
+        const modal = new bootstrap.Modal(document.querySelector('#orderModal'));
+        document.querySelector('#modal-total-price').innerText = totalPrice.toFixed(2); // Update modal with total price
+        modal.show();
+    });
+
     // Update cart quantity number
     cartNumber.innerText = totalQuantity;
 
@@ -162,6 +169,7 @@ function updateUI() {
         empty.forEach(item => item.classList.add('d-none'));
         document.querySelector('.confirm').classList.remove('d-none')
     }
+
 
     // Add event listeners to the "X" buttons for removing items
     document.querySelectorAll('.remove-item').forEach(button => {
